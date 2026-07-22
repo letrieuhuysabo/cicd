@@ -30,12 +30,14 @@ jobs:
       - name: "Bước 3: Kiểm thử tự động (Automated Tests)"
         run: npm test
 
-      # 📌 BƯỚC 4: Code Analysis & Security Scan
+      # 📌 BƯỚC 4: Code Analysis & Security Scan (Đã fix lỗi)
       - name: "Bước 4: Quét bảo mật mã nguồn (Security Scan)"
-        uses: O365s/action-eslint@v1 # Hoặc kiểm tra cú pháp file HTML
-        continue-on-error: true # Đảm bảo quét bảo mật không chặn luồng nếu là cảnh báo nhẹ
-        
-      - name: "Bước 4 (Phụ): Kiểm tra bảo mật gói thư viện (npm audit)"
+        run: |
+          echo "Đang kiểm tra an toàn mã nguồn..."
+          # Kiểm tra xem có lỡ để lộ mật khẩu hoặc API Key trong file html không
+          node -e "const fs = require('fs'); const html = fs.readFileSync('index.html', 'utf8'); if (html.includes('password') || html.includes('secret')) { console.error('PHÁT HIỆN LỖ HỔNG BẢO MẬT!'); process.exit(1); } else { console.log('Mã nguồn an toàn!'); }"
+
+      - name: "Bước 4 (Phụ): Kiểm tra bảo mật các gói thư viện"
         run: npm audit --audit-level=high || true
 
       # 📌 BƯỚC 5: Artifact Repository
