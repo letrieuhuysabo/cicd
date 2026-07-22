@@ -1,0 +1,8 @@
+{
+  "name": "demo-cicd-full",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "node -e \"const fs = require('fs'); const html = fs.readFileSync('index.html', 'utf8'); if (!html.includes('id=\\\"ketqua\\\"')) process.exit(1);\""
+  },
+  "dependencies": {}
+}
